@@ -1,25 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import Login from "./Pages/auth/Login";
+import Dashboard from "./Pages/dashboard/Dashboard";
+import UserContext from "./Context/UserContext";
 
-function App() {
+const App = () => {
+
+  // const [user, setUser] = useState({ username: "10decoders", role: "admin" });
+  const [user, setUser] = useState(
+  JSON.parse(localStorage.getItem("user")) || null
+);
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <UserContext.Provider value={{ user, setUser }}>
+      <Router>
+        <Routes>
+       
+          <Route path="/" element={<Login />} />
+
+        
+          <Route path="/dashboard" element={<Dashboard />} />
+
+        
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </Router>
+    </UserContext.Provider>
   );
-}
+};
 
 export default App;

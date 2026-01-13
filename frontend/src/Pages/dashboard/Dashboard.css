@@ -1,0 +1,99 @@
+
+.dashboard-main .dashboard-container {
+  max-width: 1000px;
+  margin: 30px auto;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  padding: 20px;
+}
+
+.dashboard-main .dashboard-title {
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.dashboard-main .user-info {
+  color: #34495e;
+  margin-bottom: 20px;
+}
+
+.dashboard-main h4 {
+  color: #555;
+  margin: 20px 0 10px 0;
+}
+
+.dashboard-main .task-form,
+.dashboard-main .user-form {
+  margin-bottom: 20px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.dashboard-main .task-input,
+.dashboard-main .user-input,
+.dashboard-main .user-select {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  min-width: 150px;
+}
+
+.dashboard-main .btn {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  min-width: 80px;
+}
+
+.dashboard-main .add-btn { background-color: #2ecc71; }
+.dashboard-main .add-btn:hover { background-color: #27ae60; }
+
+.dashboard-main .approve-btn { background-color: #3498db; }
+.dashboard-main .approve-btn:hover { background-color: #2980b9; }
+
+.dashboard-main .reject-btn { background-color: #e74c3c; }
+.dashboard-main .reject-btn:hover { background-color: #c0392b; }
+
+.dashboard-main .delete-btn { background-color: #e74c3c; }
+.dashboard-main .delete-btn:hover { background-color: #c0392b; }
+
+.dashboard-main .tasks-table,
+.dashboard-main .users-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.dashboard-main .tasks-table th,
+.dashboard-main .tasks-table td,
+.dashboard-main .users-table th,
+.dashboard-main .users-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.dashboard-main .tasks-table th,
+.dashboard-main .users-table th {
+  background-color: #2980b9;
+  color: white;
+}
+
+.dashboard-main .tasks-table tr:nth-child(even),
+.dashboard-main .users-table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.dashboard-main .tasks-table button,
+.dashboard-main .users-table button {
+  padding: 5px 8px;
+  margin-right: 5px;
+  border-radius: 4px;
+}
