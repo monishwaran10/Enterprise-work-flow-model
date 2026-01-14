@@ -3,6 +3,9 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import Login from "./Pages/auth/Login";
 import Dashboard from "./Pages/dashboard/Dashboard";
 import UserContext from "./Context/UserContext";
+import Register from "./Pages/auth/Register";
+import {store} from  "./Redux/store";
+import { Provider } from "react-redux";
 
 const App = () => {
 
@@ -13,11 +16,14 @@ const App = () => {
 
 
   return (
+   <Provider store={store}>
     <UserContext.Provider value={{ user, setUser }}>
       <Router>
         <Routes>
+          <Route path="/register" element={<Register/>}/>
        
           <Route path="/" element={<Login />} />
+
 
         
           <Route path="/dashboard" element={<Dashboard />} />
@@ -27,6 +33,7 @@ const App = () => {
         </Routes>
       </Router>
     </UserContext.Provider>
+    </Provider>
   );
 };
 

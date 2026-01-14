@@ -3,8 +3,7 @@ import React, { useState, useEffect, useContext } from "react";
 import Dashboard from "../dashboard/Dashboard";
 import Modal from "../../Components/Modal";
 import UserContext from "../../Context/UserContext";
-import "./Login.css"
-
+import "./Login.css";
 
 const USERS = [
   { username: "10decodersadmin", password: "10decodersdmin@123", role: "admin" },
@@ -19,7 +18,6 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [error, setError] = useState("");
-
 
   useEffect(() => {
     const alreadyuser = JSON.parse(localStorage.getItem("user"));
@@ -61,7 +59,7 @@ const Login = () => {
       <h2>Login</h2>
       <input
         type="text"
-        name="username"
+        name="username" 
         placeholder="Username"
         value={username}
         onChange={handleChange}
@@ -77,8 +75,7 @@ const Login = () => {
     </form>
   )}
   {showModal && <Modal message={error} onClose={() => setShowModal(false)} />}
-</div>
-
+</div> 
   );
 };
 

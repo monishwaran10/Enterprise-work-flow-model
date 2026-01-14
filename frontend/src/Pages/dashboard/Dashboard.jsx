@@ -7,7 +7,7 @@ const Dashboard = () => {
 
   const [tasks, setTasks] = useState(
     JSON.parse(localStorage.getItem("tasks")) || []
-  );
+  );  
 
   const [users, setUsers] = useState(
     JSON.parse(localStorage.getItem("users")) || []
@@ -68,7 +68,7 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard-main">
-  <h2 className="dashboard-title">Enterprise Workflow Dashboard</h2>
+      <h2 className="dashboard-title">Enterprise Workflow Dashboard</h2>
       <div className="dashboard-container">
         <h3 className="user-info">
           User: {user.username} {user.role.toUpperCase()}
@@ -106,31 +106,29 @@ const Dashboard = () => {
                 <td>{task.createdBy}</td>
                 <td>{task.status}</td>
 
-   {user.role === "manager" && (
-  <td>
-    {task.status === "PENDING" ? (
-      <>
-        <button
-          className="btn approve-btn"
-          onClick={() => updateStatus(task.id, "APPROVED")}
-        >
-          Approve
-        </button>
-        <button
-          className="btn reject-btn"
-          onClick={() => updateStatus(task.id, "REJECTED")}
-        >
-          Reject
-        </button>
-      </>
-    ) : (
-      "-"
-    )}
-  </td>
-)}
+                {user.role === "manager" && (
+                  <td>
+                    {task.status === "PENDING" ? (
+                      <>
+                        <button
+                          className="btn approve-btn"
+                          onClick={() => updateStatus(task.id, "APPROVED")}
+                        >
+                          Approve
+                        </button>
+                        <button
+                          className="btn reject-btn"
+                          onClick={() => updateStatus(task.id, "REJECTED")}
+                        >
+                          Reject
+                        </button>
+                      </>
+                    ) : (
+                      "-"
+                    )}
+                  </td>
+                )}
 
-
-               
               </tr>
             ))}
 
