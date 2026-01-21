@@ -1,81 +1,71 @@
-
-import React, { useState, useEffect, useContext } from "react";
-import Dashboard from "../dashboard/Dashboard";
-import Modal from "../../Components/Modal";
-import UserContext from "../../Context/UserContext";
-import "./Login.css";
+import React, { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { loginUser } from "../../Redux/ReduxSlice";
 
 const USERS = [
-  { username: "10decodersadmin", password: "10decodersdmin@123", role: "admin" },
+  { username: "10decodersadmin", password: "10decodersadmin@123", role: "admin" },
   { username: "10decodersmanager", password: "10decoders@123", role: "manager" },
-  { username: "10decodersemployee", password: "10deemp@123", role: "employee" }
+  { username: "10decodersemployee", password: "10deemp@123", role: "employee" },
 ];
 
 const Login = () => {
-  const { user, setUser } = useContext(UserContext);
+  const dispatch = useDispatch();
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [showModal, setShowModal] = useState(false);
   const [error, setError] = useState("");
 
   useEffect(() => {
-    const alreadyuser = JSON.parse(localStorage.getItem("user"));
-    if (alreadyuser?.username && alreadyuser?.role) {
-      setUser(alreadyuser);
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+    if (storedUser) {
+      dispatch(loginUser(storedUser));
     }
-  }, [setUser]);
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    name === "username" ? setUsername(value) : setPassword(value);
-  };
+  }, [dispatch]);
 
   const handleLogin = (e) => {
     e.preventDefault();
 
-    const User = USERS.find(
+    const user = USERS.find(
       (u) => u.username === username && u.password === password
     );
 
-    if (User) {
-      setUser(User);
-      localStorage.setItem("user", JSON.stringify(User));
+    if (user) {
+      dispatch(loginUser(user));
+      localStorage.setItem("user", JSON.stringify(user));
       setError("");
     } else {
       setError("Invalid username or password");
-      setShowModal(true);
     }
   };
 
- 
-
   return (
-    <div className="login-container">
-  {user ? (
-    <Dashboard username={user.username} role={user.role} />
-  ) : (
-    <form className="login-form" onSubmit={handleLogin}>
+    <div style={{ maxWidth: "400px", margin: "100px auto" }}>
       <h2>Login</h2>
-      <input
-        type="text"
-        name="username" 
-        placeholder="Username"
-        value={username}
-        onChange={handleChange}
-      />
-      <input
-        type="password"
-        name="password"
-        placeholder="Password"
-        value={password}
-        onChange={handleChange}
-      />
-      <button type="submit">Login</button>
-    </form>
-  )}
-  {showModal && <Modal message={error} onClose={() => setShowModal(false)} />}
-</div> 
+
+      {error && <p style={{ color: "red" }}>{error}</p>}
+
+      <form onSubmit={handleLogin}>
+        <input
+          type="text"
+          placeholder="Username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          style={{ width: "100%", marginBottom: "10px", padding: "8px" }}
+        />
+
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          style={{ width: "100%", marginBottom: "10px", padding: "8px" }}
+        />
+
+        <button style={{ width: "100%", padding: "10px" }}>
+          Login
+        </button>
+      </form>
+    </div>
   );
 };
 

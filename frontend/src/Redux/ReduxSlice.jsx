@@ -1,15 +1,22 @@
-
 import { createSlice } from "@reduxjs/toolkit";
-const registerSlice = createSlice({
-  name: "register", 
+
+const ReduxSlice = createSlice({
+  name: "auth",
   initialState: {
-    user: [], 
+    user: null,
   },
   reducers: {
-    saveUser: (state, action) => {
-      state.user.push(action.payload)
+    loginUser: (state, action) => {
+      state.user = action.payload;
+    },
+    logoutUser: (state) => {
+      state.user = null;
+    },
+    registerUser: (state, action) => {
+      state.user = action.payload;
     },
   },
 });
-export const { saveUser } = registerSlice.actions;
-export default registerSlice.reducer;
+
+export const { loginUser, logoutUser, registerUser } = ReduxSlice.actions;
+export default ReduxSlice.reducer;

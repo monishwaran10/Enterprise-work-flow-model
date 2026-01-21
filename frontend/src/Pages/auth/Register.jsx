@@ -1,111 +1,88 @@
-
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { saveUser } from "../../Redux/ReduxSlice";
-import axios from "axios";
+import { observer } from "mobx-react-lite";
+import { registerUser } from "../../Redux/ReduxSlice";
+import { userStore } from "../../Mobxconfig/storage";
 
-const Register = () => {
+const Register = observer(() => {
   const dispatch = useDispatch();
 
   const [data, setData] = useState({
-    name: "",
+    username: "",
     email: "",
     password: "",
+    role: "employee",
   });
 
-  const [errors, setErrors] = useState({}); 
-  const [loading, setLoading] = useState(false); 
-
+  const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setData({ ...data, [name]: value });
+    console.log(e.target.value)
+    setData({ ...data, [e.target.name]: e.target.value });
   };
 
-  
   const validate = () => {
-    const newErrors = {};
-
-    if (!data.name.trim()) newErrors.name = "Name is required";
-    if (!data.email.trim()) newErrors.email = "Email is required";
-    else if (!/\S+@\S+\.\S+/.test(data.email))
-      newErrors.email = "Email is invalid";
-
-    if (!data.password.trim()) newErrors.password = "Password is required";
-    else if (data.password.length < 6)
-      newErrors.password = "Password is invalid";
-
-    return newErrors;
+    const err = {};
+    if (!data.username) err.username = "Username required";
+    if (!data.email) err.email = "Email required";
+    if (!data.password || data.password.length < 6)
+      err.password = "incorrect characters";
+    if (!data.role) err.role = "Role required";
+    return err;
   };
 
- 
-  const handleRegister = async () => {
-    const formErrors = validate();
-    if (Object.keys(formErrors).length > 0) {
-      setErrors(formErrors);
+  const handleRegister = () => {
+    const err = validate();
+    console.log(err);
+    if (Object.keys(err).length) {
+      setErrors(err);
       return;
     }
 
    
+    dispatch(registerUser(data));
 
-     
-      dispatch(saveUser(data));
-
-      alert("User registered successfully!");
-      setData({ name: "", email: "", password: "" });
    
+    userStore.storeregister(data);
+
+    localStorage.setItem("user", JSON.stringify(data));
+    alert("Registered successfully");
+
+    setData({
+      username: "",
+      email: "",
+      password: "",
+      role: "employee",
+    });
   };
 
   return (
-    <div style={{ maxWidth: "400px", margin: "50px auto" }}>
-      <h2>Enterprise Portal Registration</h2>
+    <div style={{ maxWidth: "400px", margin: "100px auto" }}>
+      <h2>Register</h2>
 
-      <input
-        type="text"
-        name="name"
-        placeholder="Full Name"
-        value={data.name}
-        onChange={handleChange}
-        style={{ width: "100%", margin: "10px 0", padding: "8px" }}
-      />
-      {errors.name && <p style={{ color: "red" }}>{errors.name}</p>}
+      <input name="username" value={data.username} onChange={handleChange} />
+      {errors.username && <p style={{ color: "red" }}>{errors.username}</p>}
 
-      <input
-        type="email"
-        name="email"
-        placeholder="Email"
-        value={data.email}
-        onChange={handleChange}
-        style={{ width: "100%", margin: "10px 0", padding: "8px" }}
-      />
+      <input name="email" value={data.email} onChange={handleChange} />
       {errors.email && <p style={{ color: "red" }}>{errors.email}</p>}
 
       <input
         type="password"
         name="password"
-        placeholder="Password"
         value={data.password}
         onChange={handleChange}
-        style={{ width: "100%", margin: "10px 0", padding: "8px" }}
       />
       {errors.password && <p style={{ color: "red" }}>{errors.password}</p>}
 
-      <button
-        onClick={handleRegister}
-        style={{
-          width: "100%",
-          padding: "10px",
-          backgroundColor: loading ? "gray" : "blue",
-          color: "white",
-          border: "none",
-          cursor: loading ? "not-allowed" : "pointer",
-        }}
-        disabled={loading}
-      >
-        {loading ? "Registering..." : "Register"}
-      </button>
+      <select name="role" value={data.role} onChange={handleChange}>
+        <option value="employee">Employee</option>
+        <option value="manager">Manager</option>
+        <option value="admin">Admin</option>
+      </select>
+
+      <button onClick={handleRegister}>Register</button>
     </div>
   );
-};
+});
 
 export default Register;

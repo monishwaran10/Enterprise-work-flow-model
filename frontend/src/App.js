@@ -1,39 +1,34 @@
-import React, { useState } from "react";
+import React, { Suspense, lazy } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import Login from "./Pages/auth/Login";
-import Dashboard from "./Pages/dashboard/Dashboard";
-import UserContext from "./Context/UserContext";
-import Register from "./Pages/auth/Register";
-import {store} from  "./Redux/store";
-import { Provider } from "react-redux";
+import { useSelector } from "react-redux";
+const Login = lazy(() => import("./Pages/auth/Login"));
+const Register = lazy(() => import("./Pages/auth/Register"));
+const Dashboard = lazy(() => import("./Pages/dashboard/Dashboard"));
 
 const App = () => {
-
-  // const [user, setUser] = useState({ username: "10decoders", role: "admin" });
-  const [user, setUser] = useState(
-  JSON.parse(localStorage.getItem("user")) || null
-);
-
+  const user = useSelector((state) => state.auth.user);
 
   return (
-   <Provider store={store}>
-    <UserContext.Provider value={{ user, setUser }}>
-      <Router>
+    <Router>
+      <Suspense fallback={<div>Loading...</div>}>
         <Routes>
-          <Route path="/register" element={<Register/>}/>
-       
-          <Route path="/" element={<Login />} />
+          <Route
+            path="/"
+            element={user ? <Navigate to="/dashboard" /> : <Login />}
+          />
+          <Route
+            path="/register"
+            element={user ? <Navigate to="/dashboard" /> : <Register />}
+          />
 
-
-        
-          <Route path="/dashboard" element={<Dashboard />} />
-
-        
-          <Route path="*" element={<Navigate to="/" replace />} />
+          <Route
+            path="/dashboard"
+            element={user ? <Dashboard /> : <Navigate to="/" />}
+          />
+          <Route path="*" element={<Navigate to="/" />} />
         </Routes>
-      </Router>
-    </UserContext.Provider>
-    </Provider>
+      </Suspense>
+    </Router>
   );
 };
 

@@ -1,13 +1,14 @@
-import React, { useContext, useEffect, useState } from "react";
-import UserContext from "../../Context/UserContext";
-import './Dashboard.css';
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import "./Dashboard.css";
 
 const Dashboard = () => {
-  const { user } = useContext(UserContext);
+
+  const user = useSelector((state) => state.auth.user);
 
   const [tasks, setTasks] = useState(
     JSON.parse(localStorage.getItem("tasks")) || []
-  );  
+  );
 
   const [users, setUsers] = useState(
     JSON.parse(localStorage.getItem("users")) || []
@@ -17,6 +18,7 @@ const Dashboard = () => {
   const [newUsername, setNewUsername] = useState("");
   const [newRole, setNewRole] = useState("employee");
 
+ 
   useEffect(() => {
     localStorage.setItem("tasks", JSON.stringify(tasks));
   }, [tasks]);
@@ -24,6 +26,7 @@ const Dashboard = () => {
   useEffect(() => {
     localStorage.setItem("users", JSON.stringify(users));
   }, [users]);
+
 
   const addTask = (e) => {
     e.preventDefault();
@@ -35,19 +38,21 @@ const Dashboard = () => {
         id: Date.now(),
         title: taskTitle,
         createdBy: user.username,
-        status: "PENDING"
-      }
+        status: "PENDING",
+      },
     ]);
+
     setTaskTitle("");
   };
 
   const updateStatus = (id, status) => {
     setTasks(
-      tasks.map(task =>
+      tasks.map((task) =>
         task.id === id ? { ...task, status } : task
       )
     );
   };
+
 
   const addUser = (e) => {
     e.preventDefault();
@@ -55,7 +60,7 @@ const Dashboard = () => {
 
     setUsers([
       ...users,
-      { id: Date.now(), username: newUsername, role: newRole }
+      { id: Date.now(), username: newUsername, role: newRole },
     ]);
 
     setNewUsername("");
@@ -63,17 +68,20 @@ const Dashboard = () => {
   };
 
   const deleteUser = (id) => {
-    setUsers(users.filter(u => u.id !== id));
+    setUsers(users.filter((u) => u.id !== id));
   };
 
+ 
   return (
     <div className="dashboard-main">
       <h2 className="dashboard-title">Enterprise Workflow Dashboard</h2>
+
       <div className="dashboard-container">
         <h3 className="user-info">
-          User: {user.username} {user.role.toUpperCase()}
+          User: {user.username} ({user.role.toUpperCase()})
         </h3>
 
+       
         {(user.role === "admin" || user.role === "manager") && (
           <>
             <h4>Add Task</h4>
@@ -89,6 +97,7 @@ const Dashboard = () => {
           </>
         )}
 
+       
         <h4>Tasks</h4>
         <table className="tasks-table">
           <thead>
@@ -100,7 +109,7 @@ const Dashboard = () => {
             </tr>
           </thead>
           <tbody>
-            {tasks.map(task => (
+            {tasks.map((task) => (
               <tr key={task.id}>
                 <td>{task.title}</td>
                 <td>{task.createdBy}</td>
@@ -112,13 +121,17 @@ const Dashboard = () => {
                       <>
                         <button
                           className="btn approve-btn"
-                          onClick={() => updateStatus(task.id, "APPROVED")}
+                          onClick={() =>
+                            updateStatus(task.id, "APPROVED")
+                          }
                         >
                           Approve
                         </button>
                         <button
                           className="btn reject-btn"
-                          onClick={() => updateStatus(task.id, "REJECTED")}
+                          onClick={() =>
+                            updateStatus(task.id, "REJECTED")
+                          }
                         >
                           Reject
                         </button>
@@ -128,13 +141,12 @@ const Dashboard = () => {
                     )}
                   </td>
                 )}
-
               </tr>
             ))}
-
           </tbody>
         </table>
 
+       
         {user.role === "admin" && (
           <>
             <h4>Employee Details</h4>
@@ -146,6 +158,7 @@ const Dashboard = () => {
                 onChange={(e) => setNewUsername(e.target.value)}
                 className="user-input"
               />
+
               <select
                 value={newRole}
                 onChange={(e) => setNewRole(e.target.value)}
@@ -155,6 +168,7 @@ const Dashboard = () => {
                 <option value="manager">Manager</option>
                 <option value="admin">Admin</option>
               </select>
+
               <button className="btn add-btn">Add User</button>
             </form>
 
@@ -167,7 +181,7 @@ const Dashboard = () => {
                 </tr>
               </thead>
               <tbody>
-                {users.map(u => (
+                {users.map((u) => (
                   <tr key={u.id}>
                     <td>{u.username}</td>
                     <td>{u.role}</td>

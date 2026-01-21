@@ -1,0 +1,1 @@
+ export const backendpath="http://localhost:5000/api";
