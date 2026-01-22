@@ -1,10 +1,10 @@
 import React, { Suspense, lazy } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import Chat from "./Components/Chat"
 const Login = lazy(() => import("./Pages/auth/Login"));
 const Register = lazy(() => import("./Pages/auth/Register"));
 const Dashboard = lazy(() => import("./Pages/dashboard/Dashboard"));
-
 const App = () => {
   const user = useSelector((state) => state.auth.user);
 
@@ -26,6 +26,7 @@ const App = () => {
             element={user ? <Dashboard /> : <Navigate to="/" />}
           />
           <Route path="*" element={<Navigate to="/" />} />
+           <Route path="/chat" element={<Chat/>} />
         </Routes>
       </Suspense>
     </Router>
