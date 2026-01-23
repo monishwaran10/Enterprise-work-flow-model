@@ -2,7 +2,7 @@ import { makeAutoObservable, runInAction } from "mobx";
 import axios from "axios";
 // import { useNavigate } from "react-router-dom";
 import { backendpath } from "../Constant/backendurl";
-import { useNavigate } from "react-router-dom";
+
 
 class UserStore {
   registeredUser = null;
