@@ -71,7 +71,7 @@ const login = async (req, res) => {
   }
 };
 
-const loginverify=async(req,res=>{
+const loginverify=async(req,res)=>{
   try{
   if(!token){
     return res.json({tokenstatus:"not login"});
@@ -100,6 +100,7 @@ const loginverify=async(req,res=>{
     catch(err){
       console.log(err);
     }
+  }
   
 const verifyUser=()=>{
   try{
@@ -120,5 +121,5 @@ const verifyUser=()=>{
   }
 }
 
-})
+
 module.exports = { register,login,verifyUser,loginverify };

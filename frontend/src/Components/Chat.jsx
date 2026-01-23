@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { socket } from "../Constant/socket";
-
 const Chat = () => {
   const [room, setRoom] = useState("");
   const [message, setMessage] = useState("");
@@ -11,7 +10,6 @@ const Chat = () => {
       socket.emit("join_room", room);
     }
   };
-
   const sendMessage = () => {
     if (message !== "") {
       const messageData = {
@@ -25,7 +23,6 @@ const Chat = () => {
       setMessage("");
     }
   };
-
   useEffect(() => {
     socket.on("receive_message", (data) => {
       setMessages((prev) => [...prev, data]);
@@ -36,7 +33,7 @@ const Chat = () => {
 
   return (
     <div>
-      <h2>Socket Chat</h2>
+     
 
       <input
         placeholder="Room ID"
@@ -51,7 +48,6 @@ const Chat = () => {
           </p>
         ))}
       </div>
-
       <input
         placeholder="Message"
         value={message}

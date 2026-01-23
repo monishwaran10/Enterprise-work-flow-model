@@ -6,7 +6,10 @@ const sendMessage = (req, res) => {
   const io = getIO();
   io.to(room).emit("receive_message", { room, message });
 
-  res.json({ success: true });
+  res.status(200).json({
+    success: true,
+    message: "Message sent",
+  });
 };
 
 module.exports = { sendMessage };

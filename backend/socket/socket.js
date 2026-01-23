@@ -6,6 +6,7 @@ const initSocket = (server) => {
   io = new Server(server, {
     cors: {
       origin: "*",
+      methods: ["GET", "POST"],
     },
   });
 
@@ -14,6 +15,7 @@ const initSocket = (server) => {
 
     socket.on("join_room", (room) => {
       socket.join(room);
+      console.log(`User ${socket.id} joined room ${room}`);
     });
 
     socket.on("send_message", (data) => {
@@ -26,6 +28,11 @@ const initSocket = (server) => {
   });
 };
 
-const getIO = () => io;
+const getIO = () => {
+  if (!io) {
+    throw new Error("Socket.io not initialized");
+  }
+  return io;
+};
 
 module.exports = { initSocket, getIO };
